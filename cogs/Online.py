@@ -2,10 +2,9 @@ import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
+from Config import getMCPort, GUILD_IDS
+from api.API import get_online
 from bot.embed_builder import create_embed
-from main import GUILD_IDS
-
-placeholer_players = ["LFscrolls", "Phonix75", "RPyro64", "pickle", "Slendersquid360"]
 
 
 class Online(commands.Cog):
@@ -18,14 +17,15 @@ class Online(commands.Cog):
         guild_ids=GUILD_IDS
     )
     async def func_0005(self, interaction: Interaction):
+        players = get_online(getMCPort())
         player_string = f""
-        for nextp, p in enumerate(placeholer_players):
+        for nextp, p in enumerate(players):
             player_string += f"{p}"
             if nextp is not None:
                 player_string += "\n"
 
         await interaction.response.send_message(embed=create_embed(
-            f"Online Players: **{len(placeholer_players)}**",
+            f"Online Players: **{len(players)}**",
             body=f"{player_string}"))
 
 

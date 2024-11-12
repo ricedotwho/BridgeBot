@@ -1,4 +1,6 @@
+import nextcord
 from flask import Flask, jsonify, request
+
 from api.API import send_message_discord, create_message
 
 app = Flask(__name__)

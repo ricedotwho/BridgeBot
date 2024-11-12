@@ -4,9 +4,9 @@ import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
-from api.API import get_status
-from bot.embed_builder import create_embed
-from main import GUILD_IDS, ONLINE_COUNT, STATUS, MCPORT, PERM, missing_perms
+from api.API import get_status, get_online
+from Config import getOnline, getStatus, getMCPort, GUILD_IDS, getPerms
+from utils.Utils import missing_perms
 
 placeholer_players = ["LFscrolls", "Phonix75", "RPyro64", "pickle", "Slendersquid360"]
 
@@ -14,8 +14,7 @@ placeholer_players = ["LFscrolls", "Phonix75", "RPyro64", "pickle", "Slendersqui
 class ServerListener(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.updater_running = False
-
+        self.running = False
 
     @nextcord.slash_command(
         name="channelupdater",
@@ -23,25 +22,24 @@ class ServerListener(commands.Cog):
         guild_ids=GUILD_IDS
     )
     async def func_0001(self, interaction: Interaction):
-        if PERM == '' or not any(role.id == PERM for role in interaction.user.roles):
+        if getPerms() == '' or not any(role.id == getPerms() for role in interaction.user.roles):
             await missing_perms(interaction)
             return
-        self.updater_running = not self.updater_running
-        if self.updater_running:
+        self.running = not self.running
+        if self.running:
             await interaction.response.send_message("Starting", ephemeral=True)
             await self.channel_updater()
         else:
             await interaction.response.send_message("Stopping", ephemeral=True)
 
     async def channel_updater(self):
-        while self.updater_running:
-            #todo: add api request to the server
-            online = None if ONLINE_COUNT == '' else self.bot.get_channel(int(ONLINE_COUNT))
-            status = None if STATUS == '' else self.bot.get_channel(int(STATUS))
+        while self.running:
+            online: nextcord.VoiceChannel = None if getOnline() == '' else self.bot.get_channel(int(getOnline()))
+            status: nextcord.VoiceChannel = None if getStatus() == '' else self.bot.get_channel(int(getStatus()))
             if online is not None:
-                await online.edit(name=f"Online: {len(placeholer_players)}")
+                await online.edit(name=f"Online: {get_online(getMCPort()).__len__()}", sync_permissions=True)
             if status is not None:
-                await status.edit(name=f"Status: {"Online" if get_status(MCPORT) else "Offline"}")
+                await status.edit(name=f"Status: {"Online" if get_status(getMCPort()) else "Offline"}", sync_permissions=True)
             await asyncio.sleep(10)
 
 
