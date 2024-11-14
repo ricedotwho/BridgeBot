@@ -39,7 +39,8 @@ class Admin(commands.Cog):
                         mc_port: str = None,
                         api_key: str = None,
                         avatar_link: str = None,
-                        whitelist_id: str = None):
+                        whitelist_id: str = None,
+                        py_port: str = None):
         if not has_role(interaction, getPerms()):
             await missing_perms(interaction)
             return
@@ -59,6 +60,8 @@ class Admin(commands.Cog):
             changeAvatar(avatar_link)
         if whitelist_id is not None:
             changeWhitelistId(whitelist_id)
+        if py_port is not None:
+            changePyPort(py_port)
         await interaction.response.send_message(
             embed=create_embed(
                 title="**Setup Complete!**",

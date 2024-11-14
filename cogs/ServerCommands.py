@@ -35,6 +35,30 @@ class ServerCommands(commands.Cog):
         send_command_minecraft(command=f"whitelist remove {username}", mc_port=getMCPort())
         await interaction.response.send_message(f"Removed {username} from the whitelist!", ephemeral=True)
 
+    @nextcord.slash_command(
+        name="bridgecommand",
+        description="Runs a bridge command on the server side",
+        guild_ids=GUILD_IDS
+    )
+    async def func_0003(self, interaction: Interaction, args: str):
+        if not has_role(interaction, getPerms()):
+            await missing_perms(interaction=interaction, role_id=getPerms())
+            return
+        send_command_minecraft(command=f"b {args}", mc_port=getMCPort())
+        await interaction.response.send_message(f"Ran /b {args}", ephemeral=True)
+
+    @nextcord.slash_command(
+        name="execcommand",
+        description="Runs command on the server side",
+        guild_ids=GUILD_IDS
+    )
+    async def func_0004(self, interaction: Interaction, args: str):
+        if not has_role(interaction, getPerms()):
+            await missing_perms(interaction=interaction, role_id=getPerms())
+            return
+        send_command_minecraft(command=f"{args}", mc_port=getMCPort())
+        await interaction.response.send_message(f"Ran {args}", ephemeral=True)
+
 
 def setup(bot):
     bot.add_cog(ServerCommands(bot))
