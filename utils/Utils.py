@@ -14,7 +14,9 @@ def is_channel(interaction: Interaction, channel_id):
 
 
 def is_channel_msg(message, channel_id):
-    if channel_id == '' or message.channel.id != int(channel_id): return
+    if channel_id == '' or message.channel.id != int(channel_id):
+        return False
+    return True
 
 
 async def missing_perms(interaction: Interaction, role_id=None):
