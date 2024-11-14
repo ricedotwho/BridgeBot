@@ -71,7 +71,7 @@ def get_online(mc_port) -> list[Any]:
 
 def send_message_minecraft(name: str, message: str, mc_port: int, target: str = "all"):
     requests.post(mc_url.format(port=mc_port, path="/message"),
-                  json=create_object(message=message, name=name, target=target))
+                  json=create_object(message=message, name=name, target=target, ApiKey=getApiKey()))
 
 
 def send_command_minecraft(command: str, mc_port: int):
