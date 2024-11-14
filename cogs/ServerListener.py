@@ -6,9 +6,7 @@ from nextcord.ext import commands
 
 from api.API import get_status, get_online
 from Config import getOnline, getStatus, getMCPort, GUILD_IDS, getPerms
-from utils.Utils import missing_perms
-
-placeholer_players = ["LFscrolls", "Phonix75", "RPyro64", "pickle", "Slendersquid360"]
+from utils.Utils import missing_perms, has_role
 
 
 class ServerListener(commands.Cog):
@@ -22,8 +20,8 @@ class ServerListener(commands.Cog):
         guild_ids=GUILD_IDS
     )
     async def func_0001(self, interaction: Interaction):
-        if getPerms() == '' or not any(role.id == getPerms() for role in interaction.user.roles):
-            await missing_perms(interaction)
+        if not has_role(interaction, getPerms()):
+            await missing_perms(interaction=interaction, role_id=getPerms())
             return
         self.running = not self.running
         if self.running:

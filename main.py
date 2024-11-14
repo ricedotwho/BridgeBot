@@ -3,11 +3,8 @@ from multiprocessing import Process
 import nextcord
 
 from nextcord.ext import commands
-
 from Config import *
 from api.app import flask_run
-
-placeholer_players = ["LFscrolls", "Phonix75", "RPyro64", "pickle", "Slendersquid360"]
 
 bot = commands.Bot(intents=nextcord.Intents.all())
 
