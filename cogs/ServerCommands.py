@@ -17,7 +17,7 @@ class ServerCommands(commands.Cog):
         guild_ids=GUILD_IDS
     )
     async def func_0001(self, interaction: Interaction, username: str):
-        if not has_role(interaction, getPerms()) or not has_role(interaction, getWhitelistId()):
+        if not has_role(interaction, getPerms()) and not has_role(interaction, getWhitelistId()):
             await missing_perms(interaction=interaction, role_id=getWhitelistId())
             return
         send_command_minecraft(command=f"whitelist add {username}", mc_port=getMCPort())
@@ -29,7 +29,7 @@ class ServerCommands(commands.Cog):
         guild_ids=GUILD_IDS
     )
     async def func_0002(self, interaction: Interaction, username: str):
-        if not has_role(interaction, getPerms()) or not has_role(interaction, getWhitelistId()):
+        if not has_role(interaction, getPerms()) and not has_role(interaction, getWhitelistId()):
             await missing_perms(interaction=interaction, role_id=getWhitelistId())
             return
         send_command_minecraft(command=f"whitelist remove {username}", mc_port=getMCPort())
@@ -52,12 +52,12 @@ class ServerCommands(commands.Cog):
         description="Runs command on the server side",
         guild_ids=GUILD_IDS
     )
-    async def func_0004(self, interaction: Interaction, args: str):
+    async def func_0004(self, interaction: Interaction, command: str):
         if not has_role(interaction, getPerms()):
             await missing_perms(interaction=interaction, role_id=getPerms())
             return
-        send_command_minecraft(command=f"{args}", mc_port=getMCPort())
-        await interaction.response.send_message(f"Ran {args}", ephemeral=True)
+        send_command_minecraft(command=f"{command}", mc_port=getMCPort())
+        await interaction.response.send_message(f"Ran {command}", ephemeral=True)
 
 
 def setup(bot):
